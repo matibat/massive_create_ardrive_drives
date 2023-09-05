@@ -2,8 +2,10 @@
   "name": "@ardrive/node-sdk-client",
   "version": "0.0.1",
   "main": "./lib/index.js",
+  "bin": {
+    "massive_create_ardrive_drives": "./lib/index.js"
+  },
   "types": "./lib/index.d.ts",
-  "type": "module",
   "files": [
     "lib",
     "bundles",
@@ -27,24 +29,24 @@
   },
   "license": "AGPL-3.0-or-later",
   "scripts": {
-    "build:web": "node bundle.cjs",
-    "build:esm": "yarn tsc -p tsconfig.json && cp package.json README.md LICENSE.md ./lib",
-    "build": "yarn clean && yarn build:web && yarn build:esm",
-    "clean": "rimraf [ lib coverage bundles ]",
-    "postinstall": "husky install",
-    "lint": "eslint src",
-    "lint:fix": "eslint src --fix",
-    "format": "prettier --check .",
-    "format:fix": "prettier --write .",
-    "test": "c8 mocha --config .mocharc",
-    "prepare": "husky install",
-    "example:mjs": "yarn build:esm && node examples/node/index.mjs",
-    "example:cjs": "yarn build:esm && node examples/node/index.mjs",
-    "example:web": "yarn build:web && cp -r bundles/* examples/web && http-server --port 8080 --host -o examples/web"
+    "clean": "rimraf [ lib .nyc_output node_modules coverage ]",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "eslint . --ext .ts",
+    "lintfix": "eslint . --ext .ts --fix",
+    "test": "nyc mocha",
+    "coverage": "nyc --reporter text mocha",
+    "typecheck": "tsc --noemit",
+    "build": "yarn clean && tsc --project ./tsconfig.prod.json",
+    "ci": "yarn build && yarn test",
+    "dev": "yarn clean && tsc --project ./tsconfig.prod.json -w"
   },
   "dependencies": {
+    "ardrive-core-js": "^2.0.0",
     "arweave": "^1.14.4",
     "axios": "^1.4.0",
+    "bn.js": "^5.2.1",
+    "commander": "^11.0.0",
+    "lodash": "^4.17.21",
     "retry-axios": "^3.0.0",
     "winston": "^3.10.0"
   },
@@ -54,8 +56,11 @@
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
+    "@solana/web3.js": "^1.78.4",
     "@trivago/prettier-plugin-sort-imports": "^4.2.0",
+    "@types/bn.js": "^5.1.1",
     "@types/chai": "^4.3.5",
+    "@types/jwk-to-pem": "^2.0.1",
     "@types/mocha": "^10.0.1",
     "@types/node": "^20.4.8",
     "@types/sinon": "^10.0.15",
@@ -82,7 +87,8 @@
     "semantic-release": "^21.0.7",
     "sinon": "^15.2.0",
     "ts-node": "^10.9.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.2.2"
   },
-  "repository": "https://github.com/ardriveapp/node-sdk-template.git"
+  "repository": "https://github.com/ardriveapp/node-sdk-template.git",
+  "packageManager": "yarn@3.6.3"
 }
