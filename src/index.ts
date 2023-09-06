@@ -27,11 +27,13 @@ program
   .requiredOption('-w, --wallet <path>', 'Path to wallet file')
   .requiredOption('-p, --prefix <prefix>', 'Prefix for the drive names')
   .requiredOption('-n, --number <number>', 'Number of drives to create')
-  .action(async (_, options) => {
+  .action(async (options) => {
     const walletPath = options.wallet;
     const prefix = options.prefix;
     const number = parseInt(options.number);
     const dryRun = options.dryRun;
+
+    Headers;
 
     console.log('Creating ArDrive drives... ');
 
@@ -56,4 +58,4 @@ program
     console.log(createdDrives);
   });
 
-program.parse(process.argv);
+program.parse();
