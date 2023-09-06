@@ -39,7 +39,7 @@ program
     console.log('Creating ArDrive drives... ');
 
     const turboSettings: TurboSettings | undefined = turbo ? {
-      turboUrl: new URL('https://payment.ardrive.dev')
+      turboUrl: new URL('https://upload.ardrive.io/')
     } : undefined;
     const myWallet = readJWKFile(walletPath);
     const arDrive = arDriveFactory({ wallet: myWallet, dryRun, turboSettings });
@@ -56,7 +56,7 @@ program
       createdDrives.push(...createDriveResult.created);
     }
 
-    console.log(createdDrives);
+    console.log(JSON.stringify(createdDrives, null, 2));
   });
 
 program.parse();
